@@ -100,7 +100,154 @@ public class CharMatcherTest {
             }
         };
         CharMatcher matcher1 = CharMatcher.forPredicate(predicate);
+    }
 
+    @Test
+    public void indexInTest() {
+        /*获取charMatcher匹配到第一个字符的index*/
+        String input = "**el.lo,}12";
+        CharMatcher matcher = CharMatcher.forPredicate(Character::isLetterOrDigit);
+        int i = matcher.indexIn(input);
+        System.out.println(i);
+        //从第几位开始匹配到第一个字符的索引（针对于源字符串的索引index 第几位开始 不是那位开始从0开始数）  索引越界 会报异常
+        int i1 = matcher.indexIn(input, 7);
+        System.out.println(i1);
+    }
+
+    @Test
+    public void inRangeTest() {
+        /*初始化范围匹配器*/
+        String input = "a, c, z, 1, 2";
+        int count = CharMatcher.inRange('a', 'h').countIn(input);
+        System.out.println(count);
+    }
+
+    @Test
+    public void isTest() {
+        /*通过char初始化charMatcher,匹配单个字符*/
+        String input = "a, c, z, 1, 2";
+        //匹配字符串中,的个数
+        int count = CharMatcher.is(',').countIn(input);
+        System.out.println(count);
+    }
+
+    @Test
+    public void isNotTest() {
+        /*匹配参数之外的所有字符,与is相反*/
+        String input = "a, c, z, 1, 2";
+        String result = CharMatcher.isNot(',').retainFrom(input);
+        System.out.println(result);
+    }
+
+    @Test
+    public void javaIsoControlTest(){
+        /*匹配java转义字符*/
+        String input = "ab\tcd\nef\bg";
+        String result = CharMatcher.javaIsoControl().removeFrom(input);
+        System.out.println(result);
+    }
+
+    @Test
+    public void lastIndexInTest() {
+        /*获取charMatcher匹配到最后一个字符的index*/
+        String input = "**e,l.lo,}12";
+        int i = CharMatcher.is(',').lastIndexIn(input);
+        System.out.println(i);
+    }
+
+    @Test
+    public void matchesAllOfTest(){
+        /*判断CharSequence每一个字符是不是都已被charMatcher匹配*/
+        String input = "**e,l.lo,}12";
+        boolean b = CharMatcher.is(',').matchesAllOf(input);
+        System.out.println(b);
+    }
+
+    @Test
+    public void matchesAnyOfTest(){
+        /*判断CharSequence是否存在字符被charMatcher匹配*/
+        //存在任意一个 被匹配的 有一个即为true
+        String input = "**e,l.lo,}12";
+        boolean b = CharMatcher.is(',').matchesAnyOf(input);
+        System.out.println(b);
+    }
+
+    @Test
+    public void matchesNoneOfTest(){
+        /*判断CharSequence是否每一个字符都没有被charMatcher匹配*/
+        //没有一个被匹配到
+        String input = "**e,l.lo,}12";
+        boolean b = CharMatcher.is(',').matchesNoneOf(input);
+        System.out.println(b);
+    }
+
+    @Test
+    public void negateTest(){
+        /*返回与当前CharMatcher相反的CharMatcher*/
+        String input = "あH*el.lo,}12";
+        /*charMatcher为非ascii*/
+        CharMatcher matcher = CharMatcher.ascii().negate();
+        String result = matcher.retainFrom(input);
+        System.out.println(result);
+    }
+
+
+    @Test
+    public void noneTest(){
+        /*不匹配任何字符,与any()相反*/
+        String input = "H*el.lo,}12";
+        CharMatcher matcher = CharMatcher.none();
+        String result = matcher.retainFrom(input);
+        System.out.println(result);
+    }
+
+    @Test
+    public void noneOfTest(){
+        /*不匹配CharSequence内的任意一个字符,与anyOf()相反*/
+        String input = "H*el.lo,}12";
+        CharMatcher matcher = CharMatcher.noneOf("Hel");
+        //*.o,}12
+        String result = matcher.retainFrom(input);
+        System.out.println(result);
+    }
+
+    @Test
+    public void orTest(){
+        /*返回两个Matcher执行逻辑或操作的Matcher*/
+        String input = "H*el.lo,}12";
+        CharMatcher matcher0 = CharMatcher.forPredicate(Character::isLetter);
+        CharMatcher matcher1 = CharMatcher.forPredicate(Character::isDigit);
+        String result = matcher0.or(matcher1).retainFrom(input);
+        System.out.println(result);
+        //当然也有and  并且都是链式的 可以多个and  多个or 并非两个
+        String s = matcher0.and(matcher1).retainFrom(input);
+    }
+
+    @Test
+    public void trimFromTest(){
+        String input = "---h-ello--,,,";
+        /*删除前面匹配到的字符  中间中断下就不匹配了*/
+        String result = CharMatcher.is('-').trimLeadingFrom(input);
+        System.out.println(result);
+
+        /*删除尾部匹配到的字符*/
+        result = CharMatcher.is('-').trimTrailingFrom(input);
+        System.out.println(result);
+
+        /*删除首尾匹配到的字符*/
+        result = CharMatcher.anyOf("-,").trimFrom(input);
+        System.out.println(result);
+    }
+
+    @Test
+    public void whitespaceTest(){
+        /*匹配所有空白字符*/
+        String input = "       hel    lo      ";
+        //collapseFrom 替换匹配的字符为后面的 字符
+        String s = CharMatcher.breakingWhitespace().retainFrom(input);
+        System.out.println(s);
+        String result = CharMatcher.whitespace().collapseFrom(input, '-');
+        System.out.println(result);
     }
 }
 
