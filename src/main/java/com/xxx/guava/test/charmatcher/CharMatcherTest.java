@@ -1,6 +1,8 @@
 package com.xxx.guava.test.charmatcher;
 
 import com.google.common.base.CharMatcher;
+import com.google.common.base.Predicate;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.junit.Test;
 
 /**
@@ -87,7 +89,19 @@ public class CharMatcherTest {
         System.out.println(count);
     }
 
+    @Test
+    public void forPredicateTest() {
+        /*通过predicate初始化charMatcher*/
+        CharMatcher matcher = CharMatcher.forPredicate(Character::isLetterOrDigit);
+        Predicate<Character> predicate = new Predicate<Character>() {
+            @Override
+            public boolean apply(@Nullable Character character) {
+                return Character.isLetterOrDigit(character);
+            }
+        };
+        CharMatcher matcher1 = CharMatcher.forPredicate(predicate);
 
+    }
 }
 
 /**
