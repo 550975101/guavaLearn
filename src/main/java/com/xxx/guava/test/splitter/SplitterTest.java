@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+/**
+ * @author 封心
+ */
 public class SplitterTest {
 
   Pattern pattern = Pattern.compile("[.|,]");
