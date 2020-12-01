@@ -118,6 +118,7 @@ public class CharMatcherTest {
     public void inRangeTest() {
         /*初始化范围匹配器*/
         String input = "a, c, z, 1, 2";
+        //给定字符范围匹配，如CharMatcher.inRange(‘a’, ‘z’)
         int count = CharMatcher.inRange('a', 'h').countIn(input);
         System.out.println(count);
     }
@@ -215,7 +216,9 @@ public class CharMatcherTest {
     public void orTest(){
         /*返回两个Matcher执行逻辑或操作的Matcher*/
         String input = "H*el.lo,}12";
+        //匹配字母
         CharMatcher matcher0 = CharMatcher.forPredicate(Character::isLetter);
+        //匹配数字
         CharMatcher matcher1 = CharMatcher.forPredicate(Character::isDigit);
         String result = matcher0.or(matcher1).retainFrom(input);
         System.out.println(result);
@@ -247,6 +250,15 @@ public class CharMatcherTest {
         String s = CharMatcher.breakingWhitespace().retainFrom(input);
         System.out.println(s);
         String result = CharMatcher.whitespace().collapseFrom(input, '-');
+        System.out.println(result);
+    }
+
+    @Test
+    public void collapseFromTest() {
+        //把每组连续的匹配字符替换为特定字符。如WHITESPACE.collapseFrom(string, ‘ ‘)把字符串中的连续空白字符替换为单个空格。
+        //连续就是将来-- 也是替换成=   无论几个-
+        String input = "--java-hello-world";
+        String result = CharMatcher.is('-').collapseFrom(input, '=');
         System.out.println(result);
     }
 }
