@@ -1,16 +1,17 @@
 package com.xxx.guava.test.lists;
 
+import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.sun.xml.internal.fastinfoset.util.CharArray;
 import org.apache.commons.lang.ArrayUtils;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -132,6 +133,34 @@ public class ListsTest {
   public void reverseTest() {
     List<String> names = Lists.newArrayList("John", "Adam", "Jane");
     List<String> reverse = Lists.reverse(names);
+    //[Jane, Adam, John]
     System.out.println(reverse);
+    Collections.reverse(names);
+    System.out.println(names);
+  }
+
+  @Test
+  public void transformTest() {
+    List<String> list = Lists.newArrayList("this", "is", "test");
+    //一对一映射
+    List<String> transform = Lists.transform(list, s -> s.toUpperCase());
+    System.out.println(transform);
+    List<String> collect = list.stream().map(String::toUpperCase).collect(Collectors.toList());
+    System.out.println(collect);
+  }
+
+  @Test
+  public void removeDuplicatesFromList() {
+    /*去除list重复元素*/
+    List<Character> chars = Lists.newArrayList('h', 'e', 'l', 'l', 'o');
+    List<Character> characters = ImmutableSet.copyOf(chars).asList();
+    System.out.println(characters);
+    List<Character> collect = chars.stream().distinct().collect(Collectors.toList());
+    System.out.println(collect);
+    String[] array = {"1", "2", "3"};
+    List<String> list = Lists.asList("4", array);
+    System.out.println(list);
+    List<String> list1 = Lists.asList("4","5", array);
+    System.out.println(list1);
   }
 }
