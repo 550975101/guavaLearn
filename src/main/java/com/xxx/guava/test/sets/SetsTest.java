@@ -4,11 +4,6 @@ import com.google.common.collect.*;
 import org.junit.Test;
 
 import java.util.*;
-
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-
 /**
  * @author 封心
  */
