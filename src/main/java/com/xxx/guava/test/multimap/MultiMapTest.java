@@ -52,6 +52,8 @@ public class MultiMapTest {
     /*对keySet返回的视图操作  会影响multiMap*/
     Set<String> keySet = multimap.keySet();
     keySet.remove("key1");
+    //UnsupportedOperationException  不能add
+    //keys.add("key1");
     System.out.println("-----2----"+multimap.size());
     System.out.println("-----2----"+multimap);
 
