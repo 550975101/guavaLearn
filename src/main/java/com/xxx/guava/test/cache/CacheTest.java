@@ -37,7 +37,7 @@ public class CacheTest {
   }
 
   public Map<String, String> getDataFromDb(String s) {
-    System.out.println("------------缓存更新:" + s + "-----------");
+    System.out.println("从数据库中拿" + s + "-----------");
     Map<String, Map<String, String>> strMap = Maps.newHashMap();
     if ("item1".equals(s)) {
       Map<String, String> item1 = Maps.newHashMap();
